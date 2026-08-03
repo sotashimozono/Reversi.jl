@@ -35,7 +35,7 @@ function launch_gui end
 
 # Convenience methods to dispatch Symbol backends to Val-based implementations
 function launch_gui(backend::Symbol, args...; kwargs...)
-    launch_gui(Val(backend), args...; kwargs...)
+    return launch_gui(Val(backend), args...; kwargs...)
 end
 
 # Default to :makie if no backend is specified

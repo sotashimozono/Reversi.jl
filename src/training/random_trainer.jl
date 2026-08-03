@@ -46,5 +46,5 @@ end
 
 # Hyperparameters: nothing meaningful for a random baseline
 function hyperparameters(::RandomTrainer)
-    Dict{String,Any}("name" => "RandomTrainer", "stochastic" => true)
+    return Dict{String,Any}("name" => "RandomTrainer", "stochastic" => true)
 end

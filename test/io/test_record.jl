@@ -35,7 +35,7 @@ end
     rec = GameRecord(["d3"], WHITE)
     tmp = tempname() * ".txt"
     try
-        save_game(rec, tmp);
+        save_game(rec, tmp)
         got = load_game(tmp)
         @test got.result == WHITE
     finally
@@ -47,7 +47,7 @@ end
     rec = GameRecord(["d3"], EMPTY)
     tmp = tempname() * ".txt"
     try
-        save_game(rec, tmp);
+        save_game(rec, tmp)
         got = load_game(tmp)
         @test got.result == EMPTY
     finally
@@ -59,7 +59,7 @@ end
     rec = GameRecord(["d3"])   # result defaults to IN_PROGRESS
     tmp = tempname() * ".txt"
     try
-        save_game(rec, tmp);
+        save_game(rec, tmp)
         got = load_game(tmp)
         @test got.result == IN_PROGRESS
     finally
@@ -71,7 +71,7 @@ end
     rec = GameRecord(String[], BLACK)
     tmp = tempname() * ".txt"
     try
-        save_game(rec, tmp);
+        save_game(rec, tmp)
         got = load_game(tmp)
         @test isempty(got.moves)
         @test got.result == BLACK
@@ -153,8 +153,7 @@ end
 
     ref = ReversiGame()
     for m in moves
-        ;
-        make_move!(ref, m);
+        make_move!(ref, m)
     end
 
     @test replayed.black == ref.black

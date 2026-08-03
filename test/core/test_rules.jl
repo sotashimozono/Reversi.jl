@@ -58,9 +58,9 @@ end
 end
 
 @testset "make_move! – overloads" begin
-    g1 = ReversiGame();
+    g1 = ReversiGame()
     @test make_move!(g1, "d3") == true
-    g2 = ReversiGame();
+    g2 = ReversiGame()
     @test make_move!(g2, Position(3, 4)) == true
     @test g1.black == g2.black
 end

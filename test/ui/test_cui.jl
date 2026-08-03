@@ -10,7 +10,7 @@ function capture_board(f::Function)
     tmp = tempname()
     open(tmp, "w") do fh
         redirect_stdout(fh) do
-            f()
+            return f()
         end
     end
     out = read(tmp, String)

@@ -53,7 +53,7 @@ function _refresh_score_bar!(score_ax, b_count::Int, w_count::Int, config::GUICo
     )
 
     xlims!(score_ax, 0, 1)
-    ylims!(score_ax, 0, 1)
+    return ylims!(score_ax, 0, 1)
 end
 
 # ---------------------------------------------------------------------------
@@ -102,5 +102,5 @@ function _refresh_eval_graph!(
     end
 
     ylims!(eval_ax, -65, 65)
-    xlims!(eval_ax, 0, max(1.0f0, Float32(n - 1)))
+    return xlims!(eval_ax, 0, max(1.0f0, Float32(n - 1)))
 end

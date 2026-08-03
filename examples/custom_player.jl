@@ -24,7 +24,7 @@ println("="^60)
 struct HeuristicPlayer <: Player
     weights::Matrix{Float64}
     function HeuristicPlayer()
-        new(
+        return new(
             Float64[
                 100 -20 10 5 5 10 -20 100;
                 -20 -50 -2 -2 -2 -2 -50 -20;
@@ -129,7 +129,7 @@ function Reversi.get_move(::MobilityPlayer, game::ReversiGame)
     return argmax(moves) do m
         g2 = copy(game)
         make_move!(g2, m)
-        mobility(g2, game.current_player) - mobility(g2, opp)
+        return mobility(g2, game.current_player) - mobility(g2, opp)
     end
 end
 
@@ -144,7 +144,7 @@ function run_match(name1, p1, name2, p2; n=10)
         wins[w] += 1
     end
     println("  $name1 (B) vs $name2 (W) over $n games:")
-    println("    B wins=$(wins[BLACK])  W wins=$(wins[WHITE])  draws=$(wins[EMPTY])")
+    return println("    B wins=$(wins[BLACK])  W wins=$(wins[WHITE])  draws=$(wins[EMPTY])")
 end
 
 println()

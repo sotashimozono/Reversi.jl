@@ -60,7 +60,7 @@ function Reversi.launch_gui(
 
     menu_options_obs = Observable([e.name for e in registry_obs[]])
     on(registry_obs) do reg
-        menu_options_obs[] = [e.name for e in reg]
+        return menu_options_obs[] = [e.name for e in reg]
     end
 
     # Phase 4: resolve index by matching _player_name against registry entries
@@ -209,8 +209,7 @@ function Reversi.launch_gui(
     )
     rowsize!(main_col, 3, Fixed(40))
     for c in 1:3
-        ;
-        colsize!(status_bar, c, Relative(1/3));
+        colsize!(status_bar, c, Relative(1/3))
     end
 
     # -- Control toggles + Return-to-Live button --
@@ -279,7 +278,7 @@ function Reversi.launch_gui(
         config.show_eval = show
         save_session_config(config)
         # Refresh on re-show so the graph is current
-        show && _refresh_eval_graph!(
+        return show && _refresh_eval_graph!(
             eval_ax,
             score_history_obs[],
             mode_obs[] == :review ? review_pos_obs[] : 0,
@@ -295,7 +294,7 @@ function Reversi.launch_gui(
         config.show_kifu = show
         save_session_config(config)
         # Refresh on re-show so the kifu is current
-        show && _draw_kifu!(
+        return show && _draw_kifu!(
             kifu_ax,
             kifu_obs[],
             config;
@@ -304,16 +303,13 @@ function Reversi.launch_gui(
     end
 
     on(tgl_eval.active) do v
-        ;
-        show_eval_obs[] = v;
+        return show_eval_obs[] = v
     end
     on(tgl_sidebar.active) do v
-        ;
-        show_sidebar_obs[] = v;
+        return show_sidebar_obs[] = v
     end
     on(tgl_auto.active) do v
-        ;
-        auto_start_obs[] = v;
+        return auto_start_obs[] = v
     end
 
     # ---------------------------------------------------------------------------
@@ -341,7 +337,8 @@ function Reversi.launch_gui(
         review_pos_obs[] = n
         _refresh_board!(ax, g, false, true, lm, false, config)
         show_sidebar_obs[] && _draw_kifu!(kifu_ax, kifu, config; active_n=n)
-        show_eval_obs[] && _refresh_eval_graph!(eval_ax, score_history_obs[], n, config)
+        return show_eval_obs[] &&
+               _refresh_eval_graph!(eval_ax, score_history_obs[], n, config)
     end
 
     function return_to_live!()
@@ -357,7 +354,8 @@ function Reversi.launch_gui(
             config,
         )
         show_sidebar_obs[] && _draw_kifu!(kifu_ax, kifu_obs[], config; active_n=0)
-        show_eval_obs[] && _refresh_eval_graph!(eval_ax, score_history_obs[], 0, config)
+        return show_eval_obs[] &&
+               _refresh_eval_graph!(eval_ax, score_history_obs[], 0, config)
     end
 
     # ---------------------------------------------------------------------------
@@ -365,7 +363,7 @@ function Reversi.launch_gui(
     # ---------------------------------------------------------------------------
     on(game_obs) do game
         mode_obs[] == :review && return nothing
-        _refresh_board!(
+        return _refresh_board!(
             ax, game, hints_obs[], show_last_obs[], last_move_obs[], game_over_obs[], config
         )
     end
@@ -386,26 +384,26 @@ function Reversi.launch_gui(
             push!(hist, Float32(b - w))
         end
         score_history_obs[] = hist
-        show_eval_obs[] && _refresh_eval_graph!(eval_ax, hist, 0, config)
+        return show_eval_obs[] && _refresh_eval_graph!(eval_ax, hist, 0, config)
     end
     on(tgl_hints.active) do v
-        hints_obs[] = v;
-        config.show_hints = v;
+        hints_obs[] = v
+        config.show_hints = v
         save_session_config(config)
-        mode_obs[] == :live && _refresh_board!(
+        return mode_obs[] == :live && _refresh_board!(
             ax, game_obs[], v, show_last_obs[], last_move_obs[], game_over_obs[], config
         )
     end
     on(tgl_last.active) do v
-        show_last_obs[] = v;
-        config.show_last_move = v;
+        show_last_obs[] = v
+        config.show_last_move = v
         save_session_config(config)
-        mode_obs[] == :live && _refresh_board!(
+        return mode_obs[] == :live && _refresh_board!(
             ax, game_obs[], hints_obs[], v, last_move_obs[], game_over_obs[], config
         )
     end
     on(ax.scene.viewport) do _
-        mode_obs[] == :live && _refresh_board!(
+        return mode_obs[] == :live && _refresh_board!(
             ax,
             game_obs[],
             hints_obs[],
@@ -429,14 +427,14 @@ function Reversi.launch_gui(
         end
     end
     on(live_btn.clicks) do _
-        mode_obs[] == :review && return_to_live!()
+        return mode_obs[] == :review && return_to_live!()
     end
 
     # Auto-restart: when game ends and auto_start_obs is on, start next game
     on(game_over_obs) do is_over
         is_over && auto_start_obs[] || return nothing
         sleep(0.4)   # brief pause so the final position is visible
-        start_game!(
+        return start_game!(
             _selected_player(black_sel, registry_obs[]),
             _selected_player(white_sel, registry_obs[]),
         )
@@ -479,13 +477,13 @@ function Reversi.launch_gui(
     end
 
     on(new_game_btn.clicks) do _
-        start_game!(
+        return start_game!(
             _selected_player(black_sel, registry_obs[]),
             _selected_player(white_sel, registry_obs[]),
         )
     end
     on(add_player_btn.clicks) do _
-        _open_add_player_dialog!(registry_obs, () -> nothing, config)
+        return _open_add_player_dialog!(registry_obs, () -> nothing, config)
     end
 
     # ---------------------------------------------------------------------------
@@ -517,7 +515,7 @@ function Reversi.launch_gui(
         win_pos = events(fig.scene).mouseposition[]
         n = _kifu_move_at(kifu_ax, fig, win_pos)
         n_clamped = clamp(n, 1, length(kifu_obs[]))
-        n >= 1 && n == n_clamped && enter_review!(n_clamped)
+        return n >= 1 && n == n_clamped && enter_review!(n_clamped)
     end
 
     # ---------------------------------------------------------------------------
@@ -553,7 +551,7 @@ function Reversi.launch_gui(
     _refresh_board!(ax, game_obs[], sh, false, nothing, false, config)
     display(fig)
     Timer(1.0) do _
-        start_game!(b_player, w_player)
+        return start_game!(b_player, w_player)
     end
     return fig
 end

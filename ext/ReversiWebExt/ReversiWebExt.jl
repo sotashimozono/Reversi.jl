@@ -499,7 +499,7 @@ function Reversi.launch_gui(::Val{:web}; port::Int=8080, open_browser::Bool=true
         end
     end
 
-    serve(; host="0.0.0.0", port=port, middleware=[cors_middleware])
+    return serve(; host="0.0.0.0", port=port, middleware=[cors_middleware])
 end
 
 # Internal helper for auto-passing

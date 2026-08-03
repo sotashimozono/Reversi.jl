@@ -88,7 +88,7 @@ function _draw_hints!(ax, game::ReversiGame, px_per_unit::Real, config::GUIConfi
     moves = valid_moves(game)
     isempty(moves) && return nothing
     pts = [Point2f(_board_to_xy(m.row, m.col)...) for m in moves]
-    scatter!(
+    return scatter!(
         ax,
         pts;
         color=_get_color(config, "hint"),
@@ -104,5 +104,5 @@ function _refresh_board!(ax, game, show_hints, show_last, last_move, game_over, 
     empty!(ax)
     _draw_board!(ax, config)
     _draw_pieces!(ax, game, ppu, config, show_last ? last_move : nothing)
-    show_hints && !game_over && _draw_hints!(ax, game, ppu, config)
+    return show_hints && !game_over && _draw_hints!(ax, game, ppu, config)
 end

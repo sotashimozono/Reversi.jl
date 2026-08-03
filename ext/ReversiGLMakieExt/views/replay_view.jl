@@ -38,7 +38,7 @@ function Reversi.launch_replay_gui(moves::Vector{String}; title::String="Game Re
     Label(
         fig[1, 1];
         text=@lift(
-            let (b, w) = count_pieces($game_obs);
+            let (b, w) = count_pieces($game_obs)
                 "B $b – W $w"
             end
         ),
@@ -164,37 +164,31 @@ function Reversi.launch_replay_gui(moves::Vector{String}; title::String="Game Re
         slider.value[] = p
         lm = (show_last_obs[] && p > 0 && moves[p] != "pass") ? Position(moves[p]) : nothing
         _refresh_board!(ax, states[p + 1], false, show_last_obs[], lm, false, config)
-        _refresh_replay_kifu!(kifu_ax, moves, move_colors, p, config)
+        return _refresh_replay_kifu!(kifu_ax, moves, move_colors, p, config)
     end
 
     on(tgl_last.active) do v
-        ;
-        show_last_obs[] = v;
-        _goto!(pos_obs[]);
+        show_last_obs[] = v
+        return _goto!(pos_obs[])
     end
     on(ax.scene.viewport) do _
-        ;
-        _goto!(pos_obs[]);
+        return _goto!(pos_obs[])
     end
     on(btn_first.clicks) do _
-        ;
-        _goto!(0);
+        return _goto!(0)
     end
     on(btn_prev.clicks) do _
-        ;
-        _goto!(pos_obs[]-1);
+        return _goto!(pos_obs[]-1)
     end
     on(btn_next.clicks) do _
-        ;
-        _goto!(pos_obs[]+1);
+        return _goto!(pos_obs[]+1)
     end
     on(btn_last.clicks) do _
-        ;
-        _goto!(n_moves);
+        return _goto!(n_moves)
     end
     on(slider.value) do v
         v == pos_obs[] && return nothing
-        _goto!(v)
+        return _goto!(v)
     end
     on(events(fig.scene).keyboardbutton) do event
         (event.action == Keyboard.press || event.action == Keyboard.repeat) ||
@@ -202,7 +196,7 @@ function Reversi.launch_replay_gui(moves::Vector{String}; title::String="Game Re
         event.key == Keyboard.left && _goto!(pos_obs[]-1)
         event.key == Keyboard.right && _goto!(pos_obs[]+1)
         event.key == Keyboard.home && _goto!(0)
-        event.key == Keyboard.end_ && _goto!(n_moves)
+        return event.key == Keyboard.end_ && _goto!(n_moves)
     end
 
     _goto!(0)

@@ -27,5 +27,7 @@ function display_board(game::ReversiGame; hints::Vector{Position}=Position[])
     end
     black_count, white_count = count_pieces(game)
     println("Black (●): $black_count  White (○): $white_count")
-    println("Current player: $(game.current_player == BLACK ? "Black (●)" : "White (○)")")
+    return println(
+        "Current player: $(game.current_player == BLACK ? "Black (●)" : "White (○)")"
+    )
 end

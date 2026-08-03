@@ -39,7 +39,7 @@ function _open_add_player_dialog!(
     )
 
     on(btn_cancel.clicks) do _
-        close(dlg.scene)
+        return close(dlg.scene)
     end
 
     on(btn_reg.clicks) do _
@@ -63,7 +63,7 @@ function _open_add_player_dialog!(
         entry = NamedPlayerEntry(String(raw_name), () -> Main.eval(Meta.parse(expr_str)))
         registry_obs[] = vcat(registry_obs[], [entry])
         update_cb()
-        close(dlg.scene)
+        return close(dlg.scene)
     end
 
     display(dlg)

@@ -79,7 +79,7 @@ function get_move(::MobilityPlayer, game::ReversiGame)
     return argmax(moves) do m
         g2 = copy(game)
         make_move!(g2, m.row, m.col)
-        mobility(g2, me) - mobility(g2, opp)
+        return mobility(g2, me) - mobility(g2, opp)
     end
 end
 
@@ -183,7 +183,7 @@ mutable struct _MCTSNode
 end
 
 function _new_mcts_node(game::ReversiGame, parent, move)
-    _MCTSNode(
+    return _MCTSNode(
         0.0,
         0,
         valid_moves(game),

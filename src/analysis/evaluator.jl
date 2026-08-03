@@ -18,7 +18,7 @@ evaluation. Higher is better (from the current player's perspective).
 function score_move end
 
 function score_move(::HeuristicPlayer, ::ReversiGame, move::Position)
-    POSITIONAL_WEIGHTS[move.row, move.col]
+    return POSITIONAL_WEIGHTS[move.row, move.col]
 end
 
 function score_move(::CornerPlayer, ::ReversiGame, move::Position)
@@ -247,5 +247,5 @@ function make_evaluator(name::AbstractString)
         iter === nothing && throw(ArgumentError("Invalid mcts spec: $name"))
         return MCTSPlayer(clamp(iter, 10, 5000))
     end
-    throw(ArgumentError("Unknown evaluator: $name"))
+    return throw(ArgumentError("Unknown evaluator: $name"))
 end
