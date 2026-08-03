@@ -13,7 +13,7 @@ function start_tournament!(session::TournamentSession)
             r.draws = 0
             r.completed = 0
         end
-        session.is_running = true
+        return session.is_running = true
     end
 
     session.task = @async begin
@@ -56,7 +56,7 @@ Signal the tournament loop to stop after the current game.
 """
 function stop_tournament!(session::TournamentSession)
     lock(session.lock) do
-        session.is_running = false
+        return session.is_running = false
     end
     return nothing
 end

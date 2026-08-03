@@ -43,7 +43,7 @@ function save_game(record::GameRecord, filepath::String)
         else
             "UNKNOWN"
         end
-        println(io, "RESULT: $result_str")
+        return println(io, "RESULT: $result_str")
     end
 end
 

@@ -58,7 +58,9 @@ mutable struct TrainingSession
     lock::ReentrantLock
 
     function TrainingSession(trainer::AbstractTrainer; num_episodes::Int=100)
-        new(trainer, num_episodes, TrainingMetrics[], false, nothing, ReentrantLock())
+        return new(
+            trainer, num_episodes, TrainingMetrics[], false, nothing, ReentrantLock()
+        )
     end
 end
 
@@ -142,7 +144,7 @@ should override this with a format-appropriate writer.
 """
 function save_trainer(trainer::AbstractTrainer, path::AbstractString)
     open(path, "w") do io
-        Serialization.serialize(io, trainer)
+        return Serialization.serialize(io, trainer)
     end
     return path
 end

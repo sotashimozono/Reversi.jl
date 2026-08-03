@@ -52,7 +52,7 @@ function position_to_string(pos::Position)
 end
 
 function Base.show(io::IO, pos::Position)
-    print(io, "Position($(pos.row), $(pos.col)) [$(position_to_string(pos))]")
+    return print(io, "Position($(pos.row), $(pos.col)) [$(position_to_string(pos))]")
 end
 
 # ---------------------------------------------------------------------------
@@ -107,7 +107,7 @@ mutable struct ReversiGame
             ZOBRIST_TABLE[4, 5, _color_idx(BLACK)] ⊻
             ZOBRIST_TABLE[5, 4, _color_idx(BLACK)] ⊻
             ZOBRIST_TABLE[4, 4, _color_idx(WHITE)] ⊻ ZOBRIST_TABLE[5, 5, _color_idx(WHITE)]
-        new(black, white, BLACK, 0, h)
+        return new(black, white, BLACK, 0, h)
     end
 end
 

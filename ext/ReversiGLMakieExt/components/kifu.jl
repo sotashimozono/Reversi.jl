@@ -51,7 +51,7 @@ function _draw_kifu!(
         )
     end
     ylims!(kifu_ax, length(entries) + 0.5, -0.5)
-    xlims!(kifu_ax, 0, 1)
+    return xlims!(kifu_ax, 0, 1)
 end
 
 function _refresh_replay_kifu!(kifu_ax, moves, move_colors, current_p, config)
@@ -102,5 +102,5 @@ function _refresh_replay_kifu!(kifu_ax, moves, move_colors, current_p, config)
         )
     end
     ylims!(kifu_ax, n+0.5, -0.5)
-    xlims!(kifu_ax, 0, 1)
+    return xlims!(kifu_ax, 0, 1)
 end

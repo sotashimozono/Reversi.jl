@@ -42,7 +42,7 @@ mutable struct TournamentSession
             i == j && continue
             push!(pair_results, TournamentPairResult(i, j, num_games))
         end
-        new(
+        return new(
             copy(player_names),
             Vector{Player}(players),
             num_games,

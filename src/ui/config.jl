@@ -121,7 +121,7 @@ function save_session_config(config::GUIConfig)
         "players" => Dict("black" => config.black_player, "white" => config.white_player),
     )
     open(SESSION_CONFIG_PATH, "w") do io
-        TOML.print(io, config_dict)
+        return TOML.print(io, config_dict)
     end
 end
 

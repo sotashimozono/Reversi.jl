@@ -9,7 +9,7 @@ function start_training!(session::TrainingSession)
     lock(session.lock) do
         session.is_running && error("Training is already running")
         empty!(session.metrics_history)
-        session.is_running = true
+        return session.is_running = true
     end
 
     bs = batch_size(session.trainer)
@@ -45,7 +45,7 @@ Signal the training loop to stop after the current episode finishes.
 """
 function stop_training!(session::TrainingSession)
     lock(session.lock) do
-        session.is_running = false
+        return session.is_running = false
     end
     return nothing
 end

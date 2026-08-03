@@ -132,7 +132,7 @@ Serialize `book` to `path` using Julia's `Serialization` stdlib.
 """
 function save_opening_book(book::OpeningBook, path::AbstractString)
     open(path, "w") do io
-        Serialization.serialize(io, book)
+        return Serialization.serialize(io, book)
     end
     return path
 end
