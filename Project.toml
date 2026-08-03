@@ -1,6 +1,6 @@
 name = "Reversi"
 uuid = "8f7655e2-04a7-45c2-9cb3-16b1b80822ae"
-version = "0.10.2"
+version = "0.10.3"
 authors = ["sota <shimozono-sota631@g.ecc.u-tokyo.ac.jp>"]
 
 [deps]
@@ -28,10 +28,12 @@ JSON3 = "1.14.3"
 Oxygen = "1.10.1"
 Serialization = "1.11.0"
 TOML = "1.0.3"
+TestShards = "0.3"
 julia = "1.6"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+TestShards = "acceef1d-f5e0-4fe4-a546-818dc56ce7b2"
 
 [targets]
-test = ["Test"]
+test = ["Test", "TestShards"]

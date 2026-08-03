@@ -1,50 +1,29 @@
 ENV["GKSwstype"] = "100"   # headless GLMakie
 
 using Test
+using TestShards
 
-# ---------------------------------------------------------------------------
-# Auto-discovery: run every test_*.jl file found under subdirectories.
+# Every `test_*.jl` under `test/`, in a deterministic order, each one its own shardable unit.
 #
-# Convention:
-#   test/core/test_struct.jl   → @testset "core/test_struct"
-#   test/core/test_rules.jl    → @testset "core/test_rules"
-#   test/UI/test_data.jl       → @testset "UI/test_data"
-#   …
+# This replaces `discover_tests`, which walked one and two levels deep by hand. The walk here is
+# unbounded, so a third level would be picked up too — and picked up BY BEING ON DISK, which is
+# the point: `@shard` shadows `include` inside the block, so a unit is whatever this loop
+# includes. There is no list of directories to keep in step with the tree.
 #
-# To run a single file directly (e.g. during development):
-#   julia --project=next test/core/test_wthor.jl
-# ---------------------------------------------------------------------------
-
-const TEST_ROOT = @__DIR__
-
-function discover_tests(root::String)
-    result = Tuple{String,String}[]   # (label, filepath)
-    for d1 in sort(readdir(root))
-        p1 = joinpath(root, d1)
-        isdir(p1) || continue
-        for entry in sort(readdir(p1))
-            p2 = joinpath(p1, entry)
-            if isdir(p2)
-                # two levels deep: e.g. ext/ReversiGLMakieExt/test_foo.jl
-                for f in sort(readdir(p2))
-                    startswith(f, "test_") && endswith(f, ".jl") || continue
-                    label = joinpath(d1, entry, splitext(f)[1])
-                    push!(result, (label, joinpath(p2, f)))
-                end
-            elseif startswith(entry, "test_") && endswith(entry, ".jl")
-                # one level deep: e.g. core/test_rules.jl
-                label = joinpath(d1, splitext(entry)[1])
-                push!(result, (label, p2))
-            end
-        end
-    end
-    return result
-end
-
-@testset "Reversi.jl" begin
-    for (label, filepath) in discover_tests(TEST_ROOT)
-        @testset "$label" begin
-            include(filepath)
+# Two rules when adding to this, and they are the only two:
+#
+#   1. SHARED FIXTURES GO ABOVE THIS BLOCK. A helper included inside becomes a unit of its own,
+#      lands on ONE shard, and every test file on the other shards that needed it fails.
+#   2. ANYTHING THAT IS NOT A `test_*.jl` FILE MUST BE NAMED. The glob does not error on what it
+#      does not match; it silently stops running it.
+#
+# A bare `Pkg.test()` with nothing set in the environment runs all of it, in this order. Run one
+# shard locally with `TESTSHARDS_ID=s2 TESTSHARDS_N=4 julia --project -e 'using Pkg; Pkg.test()'`.
+TestShards.@shard begin
+    for (dir, _, files) in sort!(collect(walkdir(@__DIR__)))
+        for f in sort(files)
+            startswith(f, "test_") && endswith(f, ".jl") || continue
+            include(joinpath(dir, f))
         end
     end
 end
