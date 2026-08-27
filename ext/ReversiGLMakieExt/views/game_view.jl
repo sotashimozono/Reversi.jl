@@ -466,14 +466,18 @@ function Reversi.launch_gui(
         )
     end
 
-    on(new_game_btn.clicks) do _
-        return start_game!(
-            _selected_player(black_sel, registry_obs[]),
-            _selected_player(white_sel, registry_obs[]),
-        )
-    end
-    on(add_player_btn.clicks) do _
-        return _open_add_player_dialog!(registry_obs, () -> nothing, config)
+    on(action_menu.selection) do action
+        isnothing(action) && return nothing
+        action_menu.selection[] = nothing
+        if action == "▶ New Game"
+            return start_game!(
+                _selected_player(black_sel, registry_obs[]),
+                _selected_player(white_sel, registry_obs[]),
+            )
+        elseif action == "+ Add Player"
+            return _open_add_player_dialog!(registry_obs, () -> nothing, config)
+        end
+        return nothing
     end
 
     # ---------------------------------------------------------------------------
