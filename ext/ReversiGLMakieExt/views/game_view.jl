@@ -506,8 +506,9 @@ function Reversi.launch_gui(
     # ---------------------------------------------------------------------------
     on(events(fig.scene).mousebutton) do event
         event.button == Mouse.left && event.action == Mouse.press || return nothing
-        win_pos = events(fig.scene).mouseposition[]
-        n = _kifu_move_at(kifu_ax, fig, win_pos)
+        is_mouseinside(kifu_ax.scene) || return nothing
+        isempty(kifu_obs[]) && return nothing
+        n = floor(Int, mouseposition(kifu_ax.scene)[2] + 0.5) + 1
         n_clamped = clamp(n, 1, length(kifu_obs[]))
         return n >= 1 && n == n_clamped && enter_review!(n_clamped)
     end
