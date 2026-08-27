@@ -302,16 +302,6 @@ function Reversi.launch_gui(
         )
     end
 
-    on(tgl_eval.active) do v
-        return show_eval_obs[] = v
-    end
-    on(tgl_sidebar.active) do v
-        return show_sidebar_obs[] = v
-    end
-    on(tgl_auto.active) do v
-        return auto_start_obs[] = v
-    end
-
     # ---------------------------------------------------------------------------
     # Review mode helpers
     # ---------------------------------------------------------------------------
