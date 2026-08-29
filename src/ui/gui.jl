@@ -55,15 +55,33 @@ launch_replay_gui(rec)
 """
 function launch_replay_gui end
 
-# ---------------------------------------------------------------------------
-# Kifu list layout — the contract between drawing a move list and clicking it.
-#
-# Rows are top-anchored, one per move, row `n` at `y = n - 1`, on a y-reversed
-# axis; row `n` therefore covers the half-open band `[n-1, n)`. Both directions
-# live here because a backend that draws with one convention and hit-tests with
-# another mis-selects moves while every single-anchor test still passes.
-# ---------------------------------------------------------------------------
+"""
+    kifu_row_y(n::Integer) -> Float32
 
+Y coordinate of the top-anchored move-list row `n`, so row `n` covers the
+half-open band `[kifu_row_y(n), kifu_row_y(n + 1))`.
+
+Forms a set with `kifu_row_at` and `kifu_row_limits`, which only mean anything
+together: a backend that draws with one convention, hit-tests with another, or
+sizes its axis to a third silently mis-selects moves or clips a row. The offsets
+themselves are free to change — the panel is tuned by eye — as long as all three
+move with them.
+"""
 kifu_row_y(n::Integer) = Float32(n - 1)
 
+"""
+    kifu_row_at(y::Real) -> Int
+
+Row lying under the y coordinate `y`, the inverse of `kifu_row_y`. A result
+outside `1:n_rows` means the point is off the list; callers must reject it,
+nothing is clamped here.
+"""
 kifu_row_at(y::Real) = floor(Int, y) + 1
+
+"""
+    kifu_row_limits(n_rows::Integer) -> Tuple{Float32,Float32}
+
+Axis range showing all `n_rows` rows with half a row of padding, high value
+first so the list reads downwards. Pass straight to `ylims!`.
+"""
+kifu_row_limits(n_rows::Integer) = (kifu_row_y(n_rows + 1) + 0.5f0, kifu_row_y(1) - 0.5f0)
