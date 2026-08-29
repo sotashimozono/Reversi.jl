@@ -54,3 +54,16 @@ launch_replay_gui(rec)
 ```
 """
 function launch_replay_gui end
+
+# ---------------------------------------------------------------------------
+# Kifu list layout — the contract between drawing a move list and clicking it.
+#
+# Rows are top-anchored, one per move, row `n` at `y = n - 1`, on a y-reversed
+# axis; row `n` therefore covers the half-open band `[n-1, n)`. Both directions
+# live here because a backend that draws with one convention and hit-tests with
+# another mis-selects moves while every single-anchor test still passes.
+# ---------------------------------------------------------------------------
+
+kifu_row_y(n::Integer) = Float32(n - 1)
+
+kifu_row_at(y::Real) = floor(Int, y) + 1
