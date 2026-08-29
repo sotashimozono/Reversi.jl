@@ -1,0 +1,17 @@
+# Thin caller. The implementation lives ONCE, in QAtlasHub/.github (public, callable from any
+# owner) — it resolves JuliaFormatter in a temp env, so the verdict does not drift between the
+# hosted and self-hosted runners.
+#
+# This replaces FormatFix.yml, which checked out `github.head_ref` and pushed a formatting commit
+# back. Neither half can work for a PR from a fork: the branch does not exist in this repository,
+# so `actions/checkout` fails outright, and a `pull_request` token cannot push to someone else's
+# fork anyway. Checking is the part that still makes sense across a fork boundary.
+name: Format Check
+on:
+  pull_request:
+    paths: ['**/*.jl']
+permissions:
+  contents: read
+jobs:
+  format:
+    uses: QAtlasHub/.github/.github/workflows/format-check.yml@main
