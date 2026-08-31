@@ -54,6 +54,7 @@ function Reversi.launch_gui(
         width=100,
         height=24,
         prompt="Actions",
+        default=nothing,
         selection_cell_color_inactive=_get_color(config, "panel"),
     )
     colsize!(menu_bar, 1, Fixed(110))
@@ -81,7 +82,7 @@ function Reversi.launch_gui(
     black_sel = Menu(
         menu_bar[1, 3];
         options=menu_options_obs,
-        i_selected=_find_idx(registry_obs[], b_player),
+        default=_find_idx(registry_obs[], b_player),
         fontsize=11,
         width=90,
         prompt="Human",
@@ -98,7 +99,7 @@ function Reversi.launch_gui(
     white_sel = Menu(
         menu_bar[1, 5];
         options=menu_options_obs,
-        i_selected=_find_idx(registry_obs[], w_player),
+        default=_find_idx(registry_obs[], w_player),
         fontsize=11,
         width=90,
         prompt="Human",
@@ -468,7 +469,7 @@ function Reversi.launch_gui(
 
     on(action_menu.selection) do action
         isnothing(action) && return nothing
-        action_menu.selection[] = nothing
+        action_menu.i_selected[] = 0
         if action == "▶ New Game"
             return start_game!(
                 _selected_player(black_sel, registry_obs[]),
@@ -508,7 +509,7 @@ function Reversi.launch_gui(
         event.button == Mouse.left && event.action == Mouse.press || return nothing
         is_mouseinside(kifu_ax.scene) || return nothing
         isempty(kifu_obs[]) && return nothing
-        n = floor(Int, mouseposition(kifu_ax.scene)[2] + 0.5) + 1
+        n = Reversi.kifu_row_at(mouseposition(kifu_ax.scene)[2])
         n_clamped = clamp(n, 1, length(kifu_obs[]))
         return n >= 1 && n == n_clamped && enter_review!(n_clamped)
     end
