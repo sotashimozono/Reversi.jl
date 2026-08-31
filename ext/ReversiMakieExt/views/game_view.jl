@@ -1,5 +1,7 @@
-function Reversi.launch_gui(
-    ::Val{:makie},
+# Builds the whole window and wires every callback, but neither shows it nor starts a game —
+# `launch_gui` below adds those two steps. Split so the layout can be exercised without a display:
+# every bug in #54 was an UndefVarError that fires when the function runs, not when it is defined.
+function _build_game_view(
     black::Union{Player,Nothing}=nothing,
     white::Union{Player,Nothing}=nothing;
     show_hints::Union{Bool,Nothing}=nothing,
@@ -545,9 +547,19 @@ function Reversi.launch_gui(
     _draw_kifu!(kifu_ax, Tuple{Int,Int,String}[], config)
     _refresh_eval_graph!(eval_ax, Float32[], 0, config)
     _refresh_board!(ax, game_obs[], sh, false, nothing, false, config)
+    return fig, () -> start_game!(b_player, w_player)
+end
+
+function Reversi.launch_gui(
+    ::Val{:makie},
+    black::Union{Player,Nothing}=nothing,
+    white::Union{Player,Nothing}=nothing;
+    show_hints::Union{Bool,Nothing}=nothing,
+)
+    fig, start! = _build_game_view(black, white; show_hints=show_hints)
     display(fig)
     Timer(1.0) do _
-        return start_game!(b_player, w_player)
+        return start!()
     end
     return fig
 end

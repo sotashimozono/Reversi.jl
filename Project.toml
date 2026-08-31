@@ -13,18 +13,18 @@ Serialization = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
 TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 
 [weakdeps]
-GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
+Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
 
 [extensions]
-ReversiGLMakieExt = "GLMakie"
+ReversiMakieExt = "Makie"
 ReversiWebExt = ["Oxygen", "DefaultApplication", "HTTP", "JSON3"]
 
 [compat]
 Dates = "1.11.0"
 DefaultApplication = "1.1.0"
-GLMakie = "0.13"
 HTTP = "1.11.0, 2"
 JSON3 = "1.14.3"
+Makie = "0.24"
 Oxygen = "1.10.1"
 Serialization = "1.11.0"
 TOML = "1.0.3"
@@ -32,8 +32,9 @@ TestShards = "0.3"
 julia = "1.6"
 
 [extras]
+Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 TestShards = "acceef1d-f5e0-4fe4-a546-818dc56ce7b2"
 
 [targets]
-test = ["Test", "TestShards"]
+test = ["Makie", "Test", "TestShards"]
