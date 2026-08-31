@@ -5,10 +5,12 @@
 # (e.g. for dispatch and for play_game calls).
 #
 # The actual windows (launch_gui / launch_replay_gui) are provided by
-# the package extension  ext/ReversiGLMakieExt.jl  and become available
-# only after GLMakie has been loaded:
+# the package extension  ext/ReversiMakieExt/, which triggers on Makie rather
+# than on a backend: nothing in it names a GLMakie symbol, so it also loads
+# with no backend at all, which is what lets CI build the layout. Showing a
+# window still needs one:
 #
-#   using GLMakie   # must be loaded before or alongside Reversi
+#   using GLMakie   # or any other Makie backend
 #   using Reversi
 # ---------------------------------------------------------------------------
 # (GUIPlayer has been merged into HumanPlayer in core/player.jl)

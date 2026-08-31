@@ -1,4 +1,4 @@
-module ReversiGLMakieExt
+module ReversiMakieExt
 
 using Reversi
 using Reversi:
@@ -20,7 +20,7 @@ using Reversi:
     pass!,
     get_move,
     position_to_string
-using GLMakie
+using Makie
 
 include("constants.jl")
 include("components/board.jl")
@@ -31,4 +31,4 @@ include("core_logic/game_task.jl")
 include("views/game_view.jl")
 include("views/replay_view.jl")
 
-end # module ReversiGLMakieExt
+end # module ReversiMakieExt

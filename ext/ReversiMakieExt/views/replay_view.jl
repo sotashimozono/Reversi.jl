@@ -2,7 +2,7 @@ function Reversi.launch_replay_gui(record::GameRecord; title::String="Game Repla
     return Reversi.launch_replay_gui(record.moves; title=title)
 end
 
-function Reversi.launch_replay_gui(moves::Vector{String}; title::String="Game Replay")
+function _build_replay_view(moves::Vector{String}; title::String="Game Replay")
     # Pre-compute all board states
     states = Vector{ReversiGame}(undef, length(moves)+1)
     move_colors = Vector{Int}(undef, length(moves))
@@ -200,6 +200,11 @@ function Reversi.launch_replay_gui(moves::Vector{String}; title::String="Game Re
     end
 
     _goto!(0)
+    return fig
+end
+
+function Reversi.launch_replay_gui(moves::Vector{String}; title::String="Game Replay")
+    fig = _build_replay_view(moves; title=title)
     display(fig)
     return fig
 end

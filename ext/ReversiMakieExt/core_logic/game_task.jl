@@ -20,7 +20,7 @@ function _selected_player(menu::Menu, registry::Vector{NamedPlayerEntry})
 end
 
 # ---------------------------------------------------------------------------
-# Async wrapper for GUI (connects Reversi.game_loop! to GLMakie Observables)
+# Async wrapper for GUI (connects Reversi.game_loop! to Makie Observables)
 # ---------------------------------------------------------------------------
 
 function run_game!(
