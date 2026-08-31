@@ -34,7 +34,7 @@ function _draw_kifu!(
         text!(
             kifu_ax,
             0.05,
-            Float32(n-1);
+            Reversi.kifu_row_y(n);
             text=lpad(string(n), 3),
             color=c_text_dim,
             fontsize=fs,
@@ -43,14 +43,14 @@ function _draw_kifu!(
         text!(
             kifu_ax,
             0.35,
-            Float32(n-1);
+            Reversi.kifu_row_y(n);
             text="$pc_tag  $notation",
             color=line_color,
             fontsize=fs,
             align=(:left, :top),
         )
     end
-    ylims!(kifu_ax, length(entries) + 0.5, -0.5)
+    ylims!(kifu_ax, Reversi.kifu_row_limits(length(entries))...)
     return xlims!(kifu_ax, 0, 1)
 end
 
@@ -84,7 +84,7 @@ function _refresh_replay_kifu!(kifu_ax, moves, move_colors, current_p, config)
         text!(
             kifu_ax,
             0.05,
-            Float32(i-1);
+            Reversi.kifu_row_y(i);
             text=lpad(string(i), 3),
             color=c_text_dim,
             fontsize=fs,
@@ -93,7 +93,7 @@ function _refresh_replay_kifu!(kifu_ax, moves, move_colors, current_p, config)
         text!(
             kifu_ax,
             0.35,
-            Float32(i-1);
+            Reversi.kifu_row_y(i);
             text="$pc_tag  $(moves[i])",
             color=row_color,
             fontsize=is_current ? fs+1 : fs,
@@ -101,6 +101,6 @@ function _refresh_replay_kifu!(kifu_ax, moves, move_colors, current_p, config)
             align=(:left, :top),
         )
     end
-    ylims!(kifu_ax, n+0.5, -0.5)
+    ylims!(kifu_ax, Reversi.kifu_row_limits(n)...)
     return xlims!(kifu_ax, 0, 1)
 end
