@@ -302,16 +302,6 @@ function Reversi.launch_gui(
         )
     end
 
-    on(tgl_eval.active) do v
-        return show_eval_obs[] = v
-    end
-    on(tgl_sidebar.active) do v
-        return show_sidebar_obs[] = v
-    end
-    on(tgl_auto.active) do v
-        return auto_start_obs[] = v
-    end
-
     # ---------------------------------------------------------------------------
     # Review mode helpers
     # ---------------------------------------------------------------------------
@@ -476,14 +466,18 @@ function Reversi.launch_gui(
         )
     end
 
-    on(new_game_btn.clicks) do _
-        return start_game!(
-            _selected_player(black_sel, registry_obs[]),
-            _selected_player(white_sel, registry_obs[]),
-        )
-    end
-    on(add_player_btn.clicks) do _
-        return _open_add_player_dialog!(registry_obs, () -> nothing, config)
+    on(action_menu.selection) do action
+        isnothing(action) && return nothing
+        action_menu.selection[] = nothing
+        if action == "▶ New Game"
+            return start_game!(
+                _selected_player(black_sel, registry_obs[]),
+                _selected_player(white_sel, registry_obs[]),
+            )
+        elseif action == "+ Add Player"
+            return _open_add_player_dialog!(registry_obs, () -> nothing, config)
+        end
+        return nothing
     end
 
     # ---------------------------------------------------------------------------
@@ -512,8 +506,9 @@ function Reversi.launch_gui(
     # ---------------------------------------------------------------------------
     on(events(fig.scene).mousebutton) do event
         event.button == Mouse.left && event.action == Mouse.press || return nothing
-        win_pos = events(fig.scene).mouseposition[]
-        n = _kifu_move_at(kifu_ax, fig, win_pos)
+        is_mouseinside(kifu_ax.scene) || return nothing
+        isempty(kifu_obs[]) && return nothing
+        n = floor(Int, mouseposition(kifu_ax.scene)[2] + 0.5) + 1
         n_clamped = clamp(n, 1, length(kifu_obs[]))
         return n >= 1 && n == n_clamped && enter_review!(n_clamped)
     end

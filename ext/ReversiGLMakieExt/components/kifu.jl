@@ -14,7 +14,7 @@ function _draw_kifu!(
     c_accent_b = _get_color(config, "accent_black")
     c_active = RGBf(1.0, 0.85, 0.2)
     fs = config.fontsize - 2
-    if isempty(kifu)
+    if isempty(entries)
         text!(
             kifu_ax,
             0.5,
@@ -28,7 +28,7 @@ function _draw_kifu!(
         ylims!(kifu_ax, 1, 0)
         return nothing
     end
-    for (n, color, notation) in kifu
+    for (n, color, notation) in entries
         pc_tag = color == BLACK ? "[B]" : "[W]"
         line_color = color == BLACK ? c_accent_b : c_text
         text!(
