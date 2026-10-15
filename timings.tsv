@@ -1,0 +1,12 @@
+core/test_ai_players.jl	1.871
+core/test_rules.jl	0.825
+core/test_struct.jl	0.646
+ext/ReversiMakieExt/test_build.jl	12.563
+ext/ReversiMakieExt/test_config.jl	0.333
+ext/ReversiMakieExt/test_game_loop.jl	0.3
+io/test_opening_book.jl	3.087
+io/test_record.jl	0.81
+io/test_wthor.jl	1.074
+ui/test_config.jl	1.809
+ui/test_cui.jl	0.1
+ui/test_gui.jl	0.224
